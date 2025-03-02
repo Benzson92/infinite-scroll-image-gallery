@@ -48,7 +48,7 @@ Ensure you have the following installed:
 - **Git** ([Download Here](https://git-scm.com/))
 
 ### **2️⃣ Clone the Repository**
-Open your terminal and run:
+Open **Terminal** (Mac/Linux) or **Command Prompt** (Windows) and run:
 
 ```bash
 git clone https://github.com/Benzson92/infinite-scroll-image-gallery.git
