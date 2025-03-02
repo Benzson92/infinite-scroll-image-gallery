@@ -74,6 +74,14 @@ Once everything is set up, start the project with:
 yarn dev
 ```
 
+After running this command:
+- The **server will start**.
+- You will see a message like this:
+Local: http://localhost:3000
+- Open your browser and go to: **[http://localhost:3000](http://localhost:3000)**
+
+🎉 **The image gallery should now be running!**
+
 ---
 
 ## Learn More
