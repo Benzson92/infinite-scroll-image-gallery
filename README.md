@@ -1,3 +1,43 @@
+# 📸 Picsum Image Gallery
+
+An interactive and **responsive image gallery** featuring **infinite scrolling, modal previews, error handling, and image downloads** using the **Picsum Photos API**.
+
+This project is built with **Next.js, React, TypeScript, and shadcn**, ensuring a modern, efficient, and scalable experience.
+
+---
+
+## 🚀 Features Implemented
+
+### ✅ **Core Features**
+- **Infinite Scroll Loading** – Loads more images as you scroll.
+- **Modal View on Click** – Enlarges images and displays details.
+- **Responsive Grid Layout**:
+  - 🖥️ **Desktop**: 3 columns
+  - 📱 **Tablet**: 2 columns
+  - 📱 **Mobile**: 1 column
+- **Loading States & Animations** – Smooth transitions and indicators.
+- **Error Handling** – Gracefully handles network and API failures.
+
+### 🌐 **API Integration**
+- Uses **Picsum Photos API** (No API key required).
+- Fetches **9 images per request** for infinite scrolling.
+
+### 🖼️ **Modal View**
+- Displays **large image preview** with:
+  - 📌 **Author name**
+  - 📏 **Image dimensions**
+- **Closes when** clicking overlay, ESC key, or close button.
+- **Smooth animations** for better user experience.
+
+### ⚠️ **Error Handling**
+- Shows **error messages** when API fails.
+- Handles cases like **no images, slow internet, and network errors**.
+
+### 📥 **Image Download**
+- Allows users to **download images** with a single click.
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
 
 ## Getting Started
