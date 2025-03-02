@@ -54,6 +54,13 @@ Open **Terminal** (Mac/Linux) or **Command Prompt** (Windows) and run:
 git clone https://github.com/Benzson92/infinite-scroll-image-gallery.git
 ```
 
+### **3️⃣ Open the Project Folder**
+Move into the project directory by running:
+
+```bash
+cd infinite-scroll-image-gallery
+```
+
 ---
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
