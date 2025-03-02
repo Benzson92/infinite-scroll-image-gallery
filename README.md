@@ -61,6 +61,12 @@ Move into the project directory by running:
 cd infinite-scroll-image-gallery
 ```
 
+### **4️⃣ Install Dependencies**
+Run the following command:
+```bash
+yarn install
+```
+
 ---
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
