@@ -50,8 +50,10 @@ Make sure you have:
 Open your terminal and run:
 
 ```bash
-git clone https://github.com/yourusername/picsum-gallery.git
+git clone https://github.com/Benzson92/infinite-scroll-image-gallery.git
 ```
+
+---
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
 
