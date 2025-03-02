@@ -41,10 +41,11 @@ This project is built with **Next.js, React, TypeScript, and shadcn**, ensuring 
 ## 🛠️ Setup & Installation
 
 ### **1️⃣ Prerequisites**
-Make sure you have:
+Ensure you have the following installed:
 
-- **Node.js** installed ([Download Here](https://nodejs.org/))
-- **Git** installed ([Download Here](https://git-scm.com/))
+- **Node.js** ([Download Here](https://nodejs.org/))
+- **Yarn** ([Installation Guide](https://yarnpkg.com/getting-started/install))
+- **Git** ([Download Here](https://git-scm.com/))
 
 ### **2️⃣ Clone the Repository**
 Open your terminal and run:
