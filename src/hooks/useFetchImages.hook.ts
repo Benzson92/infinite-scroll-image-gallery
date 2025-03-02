@@ -1,6 +1,7 @@
 // ✅ Structural Import Grouping
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
+import isEmpty from "lodash/isEmpty";
 
 import { GetPicsumPhotoAPIResponseDTO } from "@/models/dto/GetPicsumPhotoAPI.dto";
 
@@ -36,6 +37,7 @@ const fetchImages = async ({
   const { data } = await axios.get<GetPicsumPhotoAPIResponseDTO[]>(
     `https://picsum.photos/v2/list?page=${pageParam}&limit=${limit}`
   );
+
   return data;
 };
 
@@ -45,6 +47,11 @@ export const useFetchImages = () => {
     queryKey: ["images"],
     queryFn: fetchImages,
     initialPageParam: 1, // Start from page 1
-    getNextPageParam: (_, pages) => pages.length + 1, // Increment page number
+    getNextPageParam: (lastPage, allPages) => {
+      console.log("getNextPageParam lastPage", lastPage);
+      console.log("getNextPageParam allPages", allPages);
+
+      return isEmpty(lastPage) ? undefined : allPages.length + 1;
+    }, // Increment page number
   });
 };
