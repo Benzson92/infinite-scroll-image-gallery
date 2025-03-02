@@ -38,6 +38,21 @@ This project is built with **Next.js, React, TypeScript, and shadcn**, ensuring 
 
 ---
 
+## 🛠️ Setup & Installation
+
+### **1️⃣ Prerequisites**
+Make sure you have:
+
+- **Node.js** installed ([Download Here](https://nodejs.org/))
+- **Git** installed ([Download Here](https://git-scm.com/))
+
+### **2️⃣ Clone the Repository**
+Open your terminal and run:
+
+```bash
+git clone https://github.com/yourusername/picsum-gallery.git
+```
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
 
 ## Getting Started
