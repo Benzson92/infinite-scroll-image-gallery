@@ -2,6 +2,8 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import { saveAs } from "file-saver";
 import { Loader2 } from "lucide-react";
 import Image from "next/image";
+import { toast } from "sonner";
+import isEmpty from "lodash/isEmpty";
 
 import { useFetchImages } from "@/hooks/useFetchImages.hook";
 import { GetPicsumPhotoAPIResponseDTO } from "@/models/dto/GetPicsumPhotoAPI.dto";
@@ -29,11 +31,20 @@ export default function Home() {
     error,
   } = useFetchImages();
 
+  const images = data?.pages?.flatMap((page) => page) ?? [];
+  // const images = [];
+
+  console.log("Home data", data);
+  console.log("Home images", images);
+  console.log("Home isLoading", isLoading);
+  console.log("Home isError", isError);
+
   // Ref for the Intersection Observer
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
 
   const [selectedImage, setSelectedImage] =
     useState<GetPicsumPhotoAPIResponseDTO | null>(null);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   // Intersection Observer (Detect when user reaches bottom)
   const observerCallback = useCallback(
@@ -65,6 +76,8 @@ export default function Home() {
     imageUrl: string,
     imageSourceUrl: string
   ) => {
+    setIsDownloading(true);
+
     try {
       // Extract the image ID from the source URL (last part of the URL)
       const imageFileName =
@@ -74,10 +87,21 @@ export default function Home() {
       const response = await fetch(imageUrl, { mode: "cors" });
       const blob = await response.blob();
 
+      // throw new Error("Test Error");
+
       // Save the image with the extracted ID as the filename
       saveAs(blob, `${imageFileName}.jpg`);
     } catch (error) {
-      console.error("Error downloading the image:", error);
+      // console.error("Error downloading the image:", error);
+      toast.error("Error downloading the image. Please try again.", {
+        description: (
+          <p className="text-red-500">
+            {(error as Error)?.message || "An unknown error occurred."}
+          </p>
+        ),
+      });
+    } finally {
+      setIsDownloading(false);
     }
   };
 
@@ -89,47 +113,66 @@ export default function Home() {
         </h1>
 
         {isError && (
-          <Alert variant="destructive" className="w-full max-w-lg text-center">
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>
-              {error?.message || "Failed to fetch images. Please try again."}
-            </AlertDescription>
-          </Alert>
+          <div className="mb-14 flex flex-row justify-center">
+            <Alert
+              variant="destructive"
+              className="w-full max-w-lg text-center"
+            >
+              <AlertTitle className="font-bold mb-2">
+                Symphony Interrupted
+              </AlertTitle>
+              <AlertDescription>
+                {error?.message
+                  ? `${error.message}, Please try again.`
+                  : "Failed to fetch images. Please try again."}
+              </AlertDescription>
+            </Alert>
+          </div>
+        )}
+
+        {!isLoading && isEmpty(images) && (
+          <p className="text-center text-gray-500 w-full">
+            No stories captured yet, but soon this space will bloom with
+            unforgettable scenes
+          </p>
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-          {isLoading ? (
-            Array.from({ length: 6 }).map((_, index) => (
-              <Skeleton key={index} className="w-full h-64 rounded-lg" />
-            ))
-          ) : data?.pages?.flatMap((page) => page)?.length === 0 ? (
-            <p className="text-center text-gray-500">No images available.</p>
-          ) : (
-            data?.pages.flatMap((page, pageIndex) =>
-              page.map((image) => (
-                <DialogTrigger asChild key={image.id}>
-                  <Card
-                    className="cursor-pointer relative flex"
-                    onClick={() => setSelectedImage(image)}
-                  >
-                    <div className="relative flex flex-grow group overflow-hidden rounded-lg">
-                      <Image
-                        src={image.download_url}
-                        alt={image.author}
-                        width={image.width}
-                        height={image.height}
-                        className="w-full object-cover rounded-lg flex-grow"
-                        priority={pageIndex < 1} // Prioritize the first page
-                      />
-                      <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white text-sm px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                        {image.author}
-                      </div>
-                    </div>
-                  </Card>
-                </DialogTrigger>
+          {isLoading
+            ? Array.from({ length: 6 }).map((_, index) => (
+                <Skeleton key={index} className="w-full h-64 rounded-lg" />
               ))
-            )
-          )}
+            : // ) : // ) : data?.pages?.flatMap((page) => page)?.length === 0 ? (
+              // [].length === 0 ? (
+              //   <p className="text-center text-gray-500 w-full">
+              //     No stories captured yet, but soon this space will bloom with
+              //     unforgettable scenes
+              //   </p>
+
+              data?.pages.flatMap((page, pageIndex) =>
+                page.map((image) => (
+                  <DialogTrigger asChild key={image.id}>
+                    <Card
+                      className="cursor-pointer relative flex"
+                      onClick={() => setSelectedImage(image)}
+                    >
+                      <div className="relative flex flex-grow group overflow-hidden rounded-lg bg-muted">
+                        <Image
+                          src={image.download_url}
+                          alt={image.author}
+                          width={image.width}
+                          height={image.height}
+                          className="w-full object-cover rounded-lg flex-grow"
+                          priority={pageIndex < 1} // Prioritize the first page
+                        />
+                        <div className="absolute bottom-0 left-0 w-full bg-black bg-opacity-50 text-white text-sm px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                          {image.author}
+                        </div>
+                      </div>
+                    </Card>
+                  </DialogTrigger>
+                ))
+              )}
         </div>
 
         {/* ✅ Load More Indicator */}
@@ -163,6 +206,7 @@ export default function Home() {
 
             <div className="flex flex-row justify-center mt-2">
               <Button
+                disabled={isDownloading}
                 onClick={() =>
                   handleDownloadImage(
                     selectedImage.download_url,
@@ -170,7 +214,9 @@ export default function Home() {
                   )
                 }
               >
-                Download Image
+                {isDownloading && <Loader2 className="animate-spin " />}
+                {/* Download Image */}
+                {isDownloading ? "Downloading..." : "Download Image"}
               </Button>
             </div>
           </DialogContent>
