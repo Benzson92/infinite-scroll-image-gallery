@@ -32,12 +32,6 @@ export default function Home() {
   } = useFetchImages();
 
   const images = data?.pages?.flatMap((page) => page) ?? [];
-  // const images = [];
-
-  console.log("Home data", data);
-  console.log("Home images", images);
-  console.log("Home isLoading", isLoading);
-  console.log("Home isError", isError);
 
   // Ref for the Intersection Observer
   const loadMoreRef = useRef<HTMLDivElement | null>(null);
@@ -87,12 +81,9 @@ export default function Home() {
       const response = await fetch(imageUrl, { mode: "cors" });
       const blob = await response.blob();
 
-      // throw new Error("Test Error");
-
       // Save the image with the extracted ID as the filename
       saveAs(blob, `${imageFileName}.jpg`);
     } catch (error) {
-      // console.error("Error downloading the image:", error);
       toast.error("Error downloading the image. Please try again.", {
         description: (
           <p className="text-red-500">
@@ -142,14 +133,7 @@ export default function Home() {
             ? Array.from({ length: 6 }).map((_, index) => (
                 <Skeleton key={index} className="w-full h-64 rounded-lg" />
               ))
-            : // ) : // ) : data?.pages?.flatMap((page) => page)?.length === 0 ? (
-              // [].length === 0 ? (
-              //   <p className="text-center text-gray-500 w-full">
-              //     No stories captured yet, but soon this space will bloom with
-              //     unforgettable scenes
-              //   </p>
-
-              data?.pages.flatMap((page, pageIndex) =>
+            : data?.pages.flatMap((page, pageIndex) =>
                 page.map((image) => (
                   <DialogTrigger asChild key={image.id}>
                     <Card
@@ -175,7 +159,7 @@ export default function Home() {
               )}
         </div>
 
-        {/* ✅ Load More Indicator */}
+        {/* Load More Indicator */}
         <div ref={loadMoreRef} className="h-10"></div>
         <div className="flex flex-row justify-center ">
           {isFetchingNextPage && (
@@ -215,7 +199,6 @@ export default function Home() {
                 }
               >
                 {isDownloading && <Loader2 className="animate-spin " />}
-                {/* Download Image */}
                 {isDownloading ? "Downloading..." : "Download Image"}
               </Button>
             </div>
